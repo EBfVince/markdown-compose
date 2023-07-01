@@ -1,16 +1,22 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("org.jetbrains.compose")
+    id("maven-publish")
 }
+
+group = "com.vinceglb"
+version = "0.1.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
 
     android {
+        publishLibraryVariants("release", "debug")
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
     }
@@ -28,7 +34,19 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                //put your multiplatform dependencies here
+                // Compose
+                implementation(compose.foundation)
+                implementation(compose.runtime)
+                implementation(compose.material3)
+
+                // Markdown
+                implementation(libs.jetbrains.markdown)
+
+                // Image Loader
+                implementation(libs.image.loader)
+
+                // Workaround for https://youtrack.jetbrains.com/issue/KT-41821
+                implementation(libs.kotlinx.atomicfu)
             }
         }
         val commonTest by getting {
@@ -42,7 +60,13 @@ kotlin {
 android {
     namespace = "com.vinceglb.markdown"
     compileSdk = 33
+
     defaultConfig {
         minSdk = 24
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }

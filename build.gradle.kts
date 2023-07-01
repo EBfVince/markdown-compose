@@ -1,7 +1,7 @@
 plugins {
-    //trick: for the same plugin versions in all sub-modules
-    id("com.android.library").version("8.2.0-alpha10").apply(false)
-    kotlin("multiplatform").version("1.8.21").apply(false)
+    kotlin("multiplatform") version libs.versions.kotlin apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
 }
 
 tasks.register("clean", Delete::class) {
