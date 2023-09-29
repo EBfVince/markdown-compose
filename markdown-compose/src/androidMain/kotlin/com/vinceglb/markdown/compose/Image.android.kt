@@ -5,19 +5,23 @@ import androidx.compose.ui.platform.LocalContext
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.cache.memory.maxSizePercent
 import com.seiko.imageloader.component.setupDefaultComponents
-import com.seiko.imageloader.util.DebugLogger
-import com.seiko.imageloader.util.LogPriority
+import com.seiko.imageloader.defaultImageResultMemoryCache
+import com.seiko.imageloader.option.androidContext
 import okio.Path.Companion.toOkioPath
 
 @Composable
 actual fun generateImageLoader(): ImageLoader {
     val context = LocalContext.current
     return ImageLoader {
-        logger = DebugLogger(LogPriority.VERBOSE)
+        options {
+            androidContext(context)
+        }
         components {
-            setupDefaultComponents(context)
+            setupDefaultComponents()
         }
         interceptor {
+            // cache 100 success image result, without bitmap
+            defaultImageResultMemoryCache()
             memoryCacheConfig {
                 // Set the max size to 25% of the app's available memory.
                 maxSizePercent(context, 0.25)
