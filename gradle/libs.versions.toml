@@ -1,19 +1,19 @@
 [versions]
-agp = "8.0.2"
-atomicfu = "0.21.0"
-compose = "1.4.0"
-imageLoader = "1.4.0"
-kotlin = "1.8.20"
-markdown = "0.4.1"
+agp = "8.2.0-beta06"
+compose = "1.5.2"
+imageLoader = "1.6.7"
+kotlin = "1.9.10"
+markdown = "0.5.1"
+maven-publish = "0.25.2"
 
 [libraries]
-kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 image-loader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 
 [bundles]
 

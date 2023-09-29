@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -5,26 +7,24 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.vinceglb"
+group = "app.vinceglb"
 version = "0.1.0"
 
-@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
 
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
-        }
     }
+    jvm("desktop")
     
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
+        macosX64(),
+        macosArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "markdown-compose"
@@ -40,13 +40,10 @@ kotlin {
                 implementation(compose.material3)
 
                 // Markdown
-                implementation(libs.jetbrains.markdown)
+                api(libs.jetbrains.markdown)
 
                 // Image Loader
                 implementation(libs.image.loader)
-
-                // Workaround for https://youtrack.jetbrains.com/issue/KT-41821
-                implementation(libs.kotlinx.atomicfu)
             }
         }
         val commonTest by getting {
@@ -59,7 +56,7 @@ kotlin {
 
 android {
     namespace = "com.vinceglb.markdown"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -68,5 +65,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
     }
 }
